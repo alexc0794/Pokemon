@@ -38,8 +38,8 @@ class ScreenPanel(map: GameMap) extends FlowPanel {
     val newY = centerY + changeY
     if (isInMap(newX, newY)) {
       val newCenterTile = map.tiles(newX)(newY)
-      if (newCenterTile.isTraversable) {
-        if (newCenterTile.hasPokemon) User.incrementGrassCounter()
+      if (newCenterTile.checkIsTraversable) {
+        if (newCenterTile.checkHasPokemon) User.incrementGrassCounter()
         map.tiles(centerX)(centerY).isCenter = false
         centerX = newX
         centerY = newY
@@ -52,7 +52,7 @@ class ScreenPanel(map: GameMap) extends FlowPanel {
   override def paintComponent(g: Graphics2D): Unit = {
     super.paintComponent(g)
     map.tiles(centerX)(centerY).isCenter = true
-    // Iterates through every tile and paints it
+    // Paint tiles
     var i = 0
     for {
       tile_x <- 0 until ScreenDimension.TILES_X
@@ -78,9 +78,20 @@ class ScreenPanel(map: GameMap) extends FlowPanel {
         g.fillRect(x1, y1, x2 - x1, y2 - y1)
       }
     }
+
+    // Paint tile objects
+    for {
+      tileObject <- map.tileObjects
+      lower = toScreenDimension(tileObject.lowerDimension.getWidth.toInt, tileObject.lowerDimension.getHeight.toInt)
+      higher = toScreenDimension(tileObject.upperDimension.getWidth.toInt, tileObject.upperDimension.getHeight.toInt)
+    } yield {
+      println(lower + " " + higher)
+      (lower, higher) match {
+        case (Some(l), Some(h)) => tileObject.drawPixels(g, l._1 * TileDimension.PIXEL_WIDTH, l._2 * TileDimension.PIXEL_HEIGHT, h._1 * TileDimension.PIXEL_WIDTH, h._2 * TileDimension.PIXEL_HEIGHT)
+        case _ =>
+      }
+    }
   }
-
-
 
 
   def isCenterOfScreen(x: Int, y: Int): Boolean = {

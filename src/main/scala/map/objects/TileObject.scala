@@ -1,41 +1,25 @@
-package map.tiles
+package map.objects
 
-import java.awt.{Color, Graphics2D}
-import map.objects.TileObject
+import java.awt.{Graphics2D, Color}
 
-import scala.collection.mutable.Stack
-import characters._
+import map.tiles.TileDimension
+
+import scala.swing.Dimension
 
 /**
- * Created by alexchou on 8/3/15.
+ * Created by alexchou on 8/6/15.
  */
-abstract class Tile {
+abstract class TileObject {
   var pixels: Array[Array[Color]] = Array.ofDim[Color](TileDimension.PIXEL_WIDTH, TileDimension.PIXEL_HEIGHT)
 
-  var hasCharacter: Option[PokeCharacter] = None
-  var tileObjects: Stack[TileObject] = Stack[TileObject]()
-  var isCenter: Boolean = false
+  var lowerDimension: Dimension
+  var upperDimension: Dimension
 
+  val isCuttable: Boolean
   val isTraversable: Boolean
   val hasPokemon: Boolean
 
   def initPixels(): Unit
-
-  def addTileObject(tileObject: TileObject): Unit = tileObjects.push(tileObject)
-
-  def checkIsTraversable(): Boolean = {
-    for (tileObject <- tileObjects) {
-      if (!tileObject.isTraversable) return false
-    }
-    isTraversable
-  }
-
-  def checkHasPokemon(): Boolean = {
-    for (tileObject <- tileObjects) {
-      if (!tileObject.hasPokemon) return false
-    }
-    hasPokemon
-  }
 
   def fillSquare(color: Color, x1: Int, x2: Int, y1: Int, y2: Int): Unit = {
     for {
@@ -55,7 +39,6 @@ abstract class Tile {
         case null => g.setColor(Color.WHITE)
         case c: Color => g.setColor(c)
       }
-      if (isCenter) g.setColor(Color.BLUE)
       g.fillRect(xLowerBound + i, yLowerBound + j, 1, 1)
     }
   }
