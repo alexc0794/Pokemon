@@ -2,24 +2,28 @@ package map.objects
 
 import java.awt.{Graphics2D, Color}
 
-import map.tiles.TileDimension
-
 import scala.swing.Dimension
 
 /**
  * Created by alexchou on 8/6/15.
  */
 abstract class TileObject {
-  var pixels: Array[Array[Color]] = Array.ofDim[Color](TileDimension.PIXEL_WIDTH, TileDimension.PIXEL_HEIGHT)
+  val start: Dimension
+  val WIDTH: Int    // width in tiles
+  val HEIGHT: Int   // height in tiles
 
-  var lowerDimension: Dimension
-  var upperDimension: Dimension
+  var pixels: Array[Array[Color]]
 
   val isCuttable: Boolean
   val isTraversable: Boolean
+  val isJumpable: Boolean
   val hasPokemon: Boolean
 
   def initPixels(): Unit
+
+  def getEnd(): Dimension = {
+      new Dimension(start.getWidth.toInt + WIDTH, start.getHeight.toInt + HEIGHT)
+  }
 
   def fillSquare(color: Color, x1: Int, x2: Int, y1: Int, y2: Int): Unit = {
     for {
@@ -36,10 +40,13 @@ abstract class TileObject {
       j <- 0 until pixels(i).length
     } yield {
       pixels(i)(j) match {
-        case null => g.setColor(Color.WHITE)
-        case c: Color => g.setColor(c)
+        case null =>
+        case c: Color => {
+          g.setColor(c)
+          g.fillRect((xLowerBound + i), (yLowerBound + j), 1, 1)
+
+        }
       }
-      g.fillRect(xLowerBound + i, yLowerBound + j, 1, 1)
     }
   }
 }

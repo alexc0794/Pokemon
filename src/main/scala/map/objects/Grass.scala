@@ -1,15 +1,25 @@
-package map.tiles
+package map.objects
 
-import java.awt.{Color, Graphics2D}
+import java.awt.Color
+
+import map.tiles.{TileDimension, Tile}
+
+import scala.swing._
 
 /**
  * Created by alexchou on 8/3/15.
  */
-class Grass extends Tile {
-  initPixels()
-
+class Grass(s: Dimension) extends TileObject {
+  val start = s
+  val WIDTH = 1
+  val HEIGHT = 1
+  var pixels = Array.ofDim[Color](WIDTH * TileDimension.PIXEL_WIDTH, HEIGHT * TileDimension.PIXEL_HEIGHT)
+  val isCuttable = true
   val isTraversable = true
+  val isJumpable = false
   val hasPokemon = true
+
+  initPixels()
 
   def initPixels(): Unit = {
     val SHADOW = new Color(159,248,171)

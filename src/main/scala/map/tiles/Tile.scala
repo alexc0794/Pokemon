@@ -1,10 +1,12 @@
 package map.tiles
 
 import java.awt.{Color, Graphics2D}
-import map.objects.TileObject
+import map.objects.{Building, TileObject}
 
 import scala.collection.mutable.Stack
 import characters._
+
+import scala.swing.Dimension
 
 /**
  * Created by alexchou on 8/3/15.
@@ -17,6 +19,7 @@ abstract class Tile {
   var isCenter: Boolean = false
 
   val isTraversable: Boolean
+  val isJumpable: Boolean
   val hasPokemon: Boolean
 
   def initPixels(): Unit
@@ -30,9 +33,27 @@ abstract class Tile {
     isTraversable
   }
 
+  def checkIsEntrance(e: Dimension): Boolean = {
+    for (tileObject <- tileObjects) {
+      println(tileObject)
+      tileObject match {
+        case o: Building => return o.entrance.equals(e)
+        case _ =>
+      }
+    }
+    false
+  }
+
+  def checkIsJumpable(): Boolean = {
+    for (tileObject <- tileObjects) {
+      if (tileObject.isJumpable) return true
+    }
+    isJumpable
+  }
+
   def checkHasPokemon(): Boolean = {
     for (tileObject <- tileObjects) {
-      if (!tileObject.hasPokemon) return false
+      if (tileObject.hasPokemon) return true
     }
     hasPokemon
   }

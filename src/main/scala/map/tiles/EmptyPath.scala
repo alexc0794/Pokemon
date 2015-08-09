@@ -9,6 +9,7 @@ class EmptyPath extends Tile {
   initPixels()
 
   val isTraversable = true
+  val isJumpable = false
   val hasPokemon = false
 
   def initPixels(): Unit = {

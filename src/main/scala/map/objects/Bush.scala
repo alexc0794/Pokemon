@@ -2,20 +2,23 @@ package map.objects
 
 import java.awt.Color
 
+import map.tiles.TileDimension
+
 import scala.swing.{Dimension, Color}
 
 /**
  * Created by alexchou on 8/6/15.
  */
-class Bush(lower: Dimension, upper: Dimension) extends TileObject {
-  initPixels()
-
-  var lowerDimension = lower
-  var upperDimension = upper
-
+class Bush(s: Dimension) extends TileObject {
+  val start = s
+  val WIDTH = 1
+  val HEIGHT = 1
+  var pixels = Array.ofDim[Color](WIDTH * TileDimension.PIXEL_WIDTH, HEIGHT * TileDimension.PIXEL_HEIGHT)
   val isCuttable = false
   val isTraversable = false
+  val isJumpable = false
   val hasPokemon = false
+  initPixels()
 
   def initPixels(): Unit = {
     val COLOR = new Color(26,122,23)

@@ -2,7 +2,7 @@ package map.maps
 
 import java.awt.Dimension
 
-import map.objects.{TileObject, Bush}
+import map.objects._
 import map.tiles._
 
 import scala.util.Random
@@ -19,15 +19,30 @@ object TestMap extends GameMap {
     i <- 0 until tiles.length
     j <- 0 until tiles(i).length
   } yield {
-    tiles(i)(j) = if (Math.round(Random.nextFloat()) == 0) new Grass else new EmptyPath
+    tiles(i)(j) = if (Math.round(Random.nextFloat()) == 0) new EmptyPath else new EmptyPath
   }
   tiles(entrance.getWidth.toInt)(entrance.getHeight.toInt) = new EmptyPath
 
-  // Add tile objects
-  addTileObject(new Bush(
-    new Dimension(entrance.getWidth.toInt+1,entrance.getHeight.toInt),
-    new Dimension(entrance.getWidth.toInt+2,entrance.getHeight.toInt+1))
+  addTileObject(new Grass(
+    new Dimension(entrance.getWidth.toInt - 1, entrance.getHeight.toInt - 1))
+
   )
 
+  // Add tile objects
+  addTileObject(new Bush(
+    new Dimension(entrance.getWidth.toInt + 1, entrance.getHeight.toInt))
+  )
+
+  addTileObject(new Tree(
+    new Dimension(entrance.getWidth.toInt + 2, entrance.getHeight.toInt))
+  )
+
+  addTileObject(new Ledge(
+    new Dimension(entrance.getWidth.toInt + 3, entrance.getHeight.toInt))
+  )
+
+  addTileObject(new PokeCenter(
+    new Dimension(entrance.getWidth.toInt + 4, entrance.getHeight.toInt))
+  )
 
 }

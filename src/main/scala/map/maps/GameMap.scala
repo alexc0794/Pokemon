@@ -14,10 +14,10 @@ abstract class GameMap {
   var entrance: Dimension
 
   def addTileObject(tileObject: TileObject): Boolean = {
-    val x1 = tileObject.lowerDimension.getWidth.toInt
-    val y1 = tileObject.lowerDimension.getHeight.toInt
-    val x2 = tileObject.upperDimension.getWidth.toInt
-    val y2 = tileObject.upperDimension.getHeight.toInt
+    val x1 = tileObject.start.getWidth.toInt
+    val y1 = tileObject.start.getHeight.toInt
+    val x2 = tileObject.getEnd.getWidth.toInt
+    val y2 = tileObject.getEnd.getHeight.toInt
 
     for {
       i <- x1 until x2

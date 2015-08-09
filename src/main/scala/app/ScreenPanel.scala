@@ -34,12 +34,32 @@ class ScreenPanel(map: GameMap) extends FlowPanel {
   }
 
   def moveCharacter(changeX: Int, changeY: Int): Unit = {
-    val newX = centerX + changeX
-    val newY = centerY + changeY
+    var newX = centerX + changeX
+    var newY = centerY + changeY
     if (isInMap(newX, newY)) {
       val newCenterTile = map.tiles(newX)(newY)
-      if (newCenterTile.checkIsTraversable) {
-        if (newCenterTile.checkHasPokemon) User.incrementGrassCounter()
+      val isEntrance = newCenterTile.checkIsEntrance(new Dimension(newX, newY))
+      if (newCenterTile.checkIsTraversable || isEntrance) {
+        if (isEntrance) {
+          println("entering building")
+        }
+        else if (newCenterTile.checkIsJumpable) {
+          var jumpX = 0
+          var jumpY = 0
+          if (changeX > 0) jumpX = 1
+          else if (changeX < 0) jumpX = -1
+          else if (changeY > 0) jumpY = 1
+          else if (changeY < 0) jumpY = -1
+          if (map.tiles(newX + jumpX)(newY + jumpY).checkIsTraversable) {
+            newX += jumpX
+            newY += jumpY
+          } else {
+            newX -= changeX
+            newY -= changeY
+          }
+        }
+        else if (newCenterTile.checkHasPokemon) User.incrementGrassCounter()
+
         map.tiles(centerX)(centerY).isCenter = false
         centerX = newX
         centerY = newY
@@ -82,8 +102,8 @@ class ScreenPanel(map: GameMap) extends FlowPanel {
     // Paint tile objects
     for {
       tileObject <- map.tileObjects
-      lower = toScreenDimension(tileObject.lowerDimension.getWidth.toInt, tileObject.lowerDimension.getHeight.toInt)
-      higher = toScreenDimension(tileObject.upperDimension.getWidth.toInt, tileObject.upperDimension.getHeight.toInt)
+      lower = toScreenDimension(tileObject.start.getWidth.toInt, tileObject.start.getHeight.toInt)
+      higher = toScreenDimension(tileObject.getEnd.getWidth.toInt, tileObject.getEnd.getHeight.toInt)
     } yield {
       println(lower + " " + higher)
       (lower, higher) match {
