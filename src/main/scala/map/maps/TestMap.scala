@@ -3,6 +3,7 @@ package map.maps
 import java.awt.Dimension
 
 import map.objects._
+import map.objects.buildings.PokeCenter
 import map.tiles._
 
 import scala.util.Random
@@ -42,7 +43,8 @@ object TestMap extends GameMap {
   )
 
   addTileObject(new PokeCenter(
-    new Dimension(entrance.getWidth.toInt + 4, entrance.getHeight.toInt))
+    new Dimension(entrance.getWidth.toInt + 4, entrance.getHeight.toInt),
+    EmptyMap)
   )
 
 }

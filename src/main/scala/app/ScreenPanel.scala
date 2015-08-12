@@ -2,7 +2,9 @@ package app
 
 import java.awt.Color
 
+import map.characters.UserCharacter
 import map.maps._
+import map.objects.buildings.Building
 import map.tiles._
 import user.User
 
@@ -11,10 +13,11 @@ import scala.swing._
 /**
  * Created by alexchou on 8/3/15.
  */
-class ScreenPanel(map: GameMap) extends FlowPanel {
+class ScreenPanel(m: GameMap) extends FlowPanel {
+  var map = m
   // centerX and centerY are indices for the map dimensions
-  var centerX = map.entrance.getWidth.toInt
-  var centerY = map.entrance.getHeight.toInt
+  var centerX: Int = map.entrance.getWidth.toInt
+  var centerY: Int = map.entrance.getHeight.toInt
 
   def getMinScreenX(): Int = centerX - ScreenDimension.CENTER_X
   def getMaxScreenX(): Int = centerX + ScreenDimension.CENTER_X
@@ -33,40 +36,65 @@ class ScreenPanel(map: GameMap) extends FlowPanel {
     else Some(newX, newY)
   }
 
+  def getTile(x: Int, y: Int): Option[Tile] = {
+    if (isInMap(x,y)) Some(map.tiles(x)(y))
+    else None
+  }
+
   def moveCharacter(changeX: Int, changeY: Int): Unit = {
-    var newX = centerX + changeX
-    var newY = centerY + changeY
-    if (isInMap(newX, newY)) {
-      val newCenterTile = map.tiles(newX)(newY)
-      val isEntrance = newCenterTile.checkIsEntrance(new Dimension(newX, newY))
-      if (newCenterTile.checkIsTraversable || isEntrance) {
-        if (isEntrance) {
-          println("entering building")
-        }
-        else if (newCenterTile.checkIsJumpable) {
-          var jumpX = 0
-          var jumpY = 0
-          if (changeX > 0) jumpX = 1
-          else if (changeX < 0) jumpX = -1
-          else if (changeY > 0) jumpY = 1
-          else if (changeY < 0) jumpY = -1
-          if (map.tiles(newX + jumpX)(newY + jumpY).checkIsTraversable) {
-            newX += jumpX
-            newY += jumpY
-          } else {
-            newX -= changeX
-            newY -= changeY
+    getTile(centerX + changeX, centerY + changeY) match {
+      case Some(tile: Tile) => {
+        if (tile.checkIsTraversable()) {
+          if (tile.checkHasPokemon()) {
+            User.incrementGrassCounter()
+          }
+          centerX += changeX
+          centerY += changeY
+        } else if (tile.checkIsJumpable()) {
+          println("Jump!")
+          centerX += (changeX * 2)
+          centerY += (changeY * 2)
+        } else {
+          tile.checkIsEntrance(new Dimension(centerX + changeX, centerY + changeY)) match {
+            case Some(toMap: GameMap) => {
+              println("change map to " + toMap)
+              for (tileObject <- toMap.tileObjects) {
+                tileObject match {
+                  case building: Building => {
+                    if (building.toMap.equals(map))
+                    centerX = building.entrance.getWidth.toInt
+                    centerY = building.entrance.getHeight.toInt
+                    map = toMap
+                    val neighbor1 = getTile(centerX + 1, centerY)
+                    val neighbor2 = getTile(centerX - 1, centerY)
+                    val neighbor3 = getTile(centerX, centerY + 1)
+                    val neighbor4 = getTile(centerX, centerY - 1)
+                    if (!neighbor1.isEmpty && neighbor1.get.checkIsTraversable()) {
+                      println("neighbor1")
+                      centerX += 1
+                    }
+                    else if (!neighbor2.isEmpty && neighbor2.get.checkIsTraversable()) {
+                      println("neighbor2")
+                      centerX -= 1
+                    }
+                    else if (!neighbor3.isEmpty && neighbor3.get.checkIsTraversable()) {
+                      println("neighbor3")
+                      centerY += 1
+                    }
+                    else if (!neighbor4.isEmpty && neighbor4.get.checkIsTraversable()) centerY -= 1
+                  }
+                  case _ =>
+                }
+              }
+              map = toMap
+            }
+            case None =>
           }
         }
-        else if (newCenterTile.checkHasPokemon) User.incrementGrassCounter()
-
-        map.tiles(centerX)(centerY).isCenter = false
-        centerX = newX
-        centerY = newY
-        println("User grass counter: " + User.grassCounter)
-        repaint()
       }
+      case None =>
     }
+    repaint
   }
 
   override def paintComponent(g: Graphics2D): Unit = {
@@ -105,12 +133,13 @@ class ScreenPanel(map: GameMap) extends FlowPanel {
       lower = toScreenDimension(tileObject.start.getWidth.toInt, tileObject.start.getHeight.toInt)
       higher = toScreenDimension(tileObject.getEnd.getWidth.toInt, tileObject.getEnd.getHeight.toInt)
     } yield {
-      println(lower + " " + higher)
       (lower, higher) match {
         case (Some(l), Some(h)) => tileObject.drawPixels(g, l._1 * TileDimension.PIXEL_WIDTH, l._2 * TileDimension.PIXEL_HEIGHT, h._1 * TileDimension.PIXEL_WIDTH, h._2 * TileDimension.PIXEL_HEIGHT)
         case _ =>
       }
     }
+    // Paint user character
+    UserCharacter.drawPixels(g, currScreenX * TileDimension.PIXEL_WIDTH, currScreenY * TileDimension.PIXEL_HEIGHT, (currScreenX + 1) * TileDimension.PIXEL_WIDTH, (currScreenY + 1) * TileDimension.PIXEL_HEIGHT)
   }
 
 

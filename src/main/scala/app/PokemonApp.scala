@@ -14,7 +14,7 @@ object PokemonApp extends SimpleSwingApplication {
   def top = new MainFrame {
     title = "Pokemon"
     peer.setLocationRelativeTo(null)
-    val screenPanel = new ScreenPanel(TestMap) {
+    var screenPanel = new ScreenPanel(TestMap) {
       background = Color.BLACK
       preferredSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
       maximumSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)

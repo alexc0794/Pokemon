@@ -1,4 +1,7 @@
-package map.objects
+package map.objects.buildings
+
+import map.maps.GameMap
+import map.objects.TileObject
 
 import scala.swing.Dimension
 
@@ -7,4 +10,5 @@ import scala.swing.Dimension
  */
 abstract class Building extends TileObject {
   val entrance: Dimension
+  val toMap: GameMap
 }

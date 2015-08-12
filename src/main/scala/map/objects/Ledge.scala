@@ -15,7 +15,7 @@ class Ledge(s: Dimension) extends TileObject {
   val HEIGHT = 1
   var pixels = Array.ofDim[Color](WIDTH * TileDimension.PIXEL_WIDTH, HEIGHT * TileDimension.PIXEL_HEIGHT)
   val isCuttable = false
-  val isTraversable = true
+  val isTraversable = false
   val isJumpable = true
   val hasPokemon = false
 

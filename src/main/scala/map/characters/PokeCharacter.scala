@@ -1,29 +1,21 @@
-package map.objects
+package map.characters
 
-import java.awt.{Graphics2D, Color}
+import java.awt.{Dimension, Color, Graphics2D}
 
-import scala.swing.Dimension
+import map.objects.TileObject
+import map.tiles.TileDimension
+
+import scala.swing._
 
 /**
- * Created by alexchou on 8/6/15.
+ * Created by alexchou on 8/4/15.
  */
-abstract class TileObject {
-  val start: Dimension
-  val WIDTH: Int    // width in tiles
-  val HEIGHT: Int   // height in tiles
+abstract class PokeCharacter {
+  var name: String
 
   var pixels: Array[Array[Color]]
 
-  val isCuttable: Boolean
-  val isTraversable: Boolean
-  val isJumpable: Boolean
-  val hasPokemon: Boolean
-
   def initPixels(): Unit
-
-  def getEnd(): Dimension = {
-      new Dimension(start.getWidth.toInt + WIDTH, start.getHeight.toInt + HEIGHT)
-  }
 
   def fillSquare(color: Color, x1: Int, x2: Int, y1: Int, y2: Int): Unit = {
     for {
@@ -48,4 +40,6 @@ abstract class TileObject {
       }
     }
   }
+
+
 }

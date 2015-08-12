@@ -1,10 +1,12 @@
 package map.tiles
 
 import java.awt.{Color, Graphics2D}
-import map.objects.{Building, TileObject}
+import map.maps.GameMap
+import map.objects.TileObject
+import map.objects.buildings.Building
 
 import scala.collection.mutable.Stack
-import characters._
+import map.characters._
 
 import scala.swing.Dimension
 
@@ -33,15 +35,24 @@ abstract class Tile {
     isTraversable
   }
 
-  def checkIsEntrance(e: Dimension): Boolean = {
+  def checkIsBuilding(): Option[Building] = {
     for (tileObject <- tileObjects) {
-      println(tileObject)
       tileObject match {
-        case o: Building => return o.entrance.equals(e)
+        case o: Building => return Some(o)
         case _ =>
       }
     }
-    false
+    None
+  }
+
+  def checkIsEntrance(e: Dimension): Option[GameMap] = {
+    for (tileObject <- tileObjects) {
+      tileObject match {
+        case o: Building => if (o.entrance.equals(e)) return Some(o.toMap)
+        case _ =>
+      }
+    }
+    None
   }
 
   def checkIsJumpable(): Boolean = {
@@ -76,7 +87,6 @@ abstract class Tile {
         case null => g.setColor(Color.WHITE)
         case c: Color => g.setColor(c)
       }
-      if (isCenter) g.setColor(Color.BLUE)
       g.fillRect(xLowerBound + i, yLowerBound + j, 1, 1)
     }
   }
