@@ -1,10 +1,11 @@
-package app
+package app.panels
 
 import java.awt.Color
 
-import map.characters.UserCharacter
+import app.ScreenDimension
+import map.characters._
 import map.maps._
-import map.objects.buildings.Building
+import map.objects.buildings._
 import map.tiles._
 import user.User
 
@@ -13,7 +14,7 @@ import scala.swing._
 /**
  * Created by alexchou on 8/3/15.
  */
-class ScreenPanel(m: GameMap) extends FlowPanel {
+class MapPanel(m: GameMap) extends ScreenPanel {
   var map = m
   // centerX and centerY are indices for the map dimensions
   var centerX: Int = map.entrance.getX.toInt
@@ -78,7 +79,7 @@ class ScreenPanel(m: GameMap) extends FlowPanel {
                       centerX -= 1
                     }
                     else if (!neighbor3.isEmpty && neighbor3.get.checkIsTraversable()) {
-                      println("neighbor3")
+                       println("neighbor3")
                       centerY += 1
                     }
                     else if (!neighbor4.isEmpty && neighbor4.get.checkIsTraversable()) centerY -= 1
@@ -140,12 +141,6 @@ class ScreenPanel(m: GameMap) extends FlowPanel {
     }
     // Paint user character
     UserCharacter.drawPixels(g, currScreenX * TileDimension.PIXEL_WIDTH, currScreenY * TileDimension.PIXEL_HEIGHT, (currScreenX + 1) * TileDimension.PIXEL_WIDTH, (currScreenY + 1) * TileDimension.PIXEL_HEIGHT)
-  }
-
-
-  def isCenterOfScreen(x: Int, y: Int): Boolean = {
-    ((x <= ScreenDimension.CENTER_X && x >= ScreenDimension.CENTER_X - 1)
-      && (y <= ScreenDimension.CENTER_Y && y >= ScreenDimension.CENTER_Y - 1))
   }
 
   // input is a map dimension
