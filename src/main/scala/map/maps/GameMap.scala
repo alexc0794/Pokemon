@@ -1,9 +1,9 @@
 package map.maps
 
-import map.objects.TileObject
-import map.tiles.{TileDimension, Tile}
+import map.objects.{Grass, TileObject}
+import map.tiles.Tile
 
-import scala.swing.Dimension
+import scala.swing.Point
 
 /**
  * Created by alexchou on 8/4/15.
@@ -11,13 +11,13 @@ import scala.swing.Dimension
 abstract class GameMap {
   val tiles: Array[Array[Tile]]
   var tileObjects: Set[TileObject]
-  var entrance: Dimension
+  var entrance: Point
 
   def addTileObject(tileObject: TileObject): Boolean = {
-    val x1 = tileObject.start.getWidth.toInt
-    val y1 = tileObject.start.getHeight.toInt
-    val x2 = tileObject.getEnd.getWidth.toInt
-    val y2 = tileObject.getEnd.getHeight.toInt
+    val x1 = tileObject.start.getX.toInt
+    val y1 = tileObject.start.getY.toInt
+    val x2 = tileObject.getEnd.getX.toInt
+    val y2 = tileObject.getEnd.getY.toInt
 
     for {
       i <- x1 until x2
@@ -32,6 +32,17 @@ abstract class GameMap {
     }
 
     tileObjects += tileObject
+    true
+  }
+
+
+  def addGrass(start: Point, end: Point): Boolean = {
+    for {
+      x <- Math.min(start.getX.toInt, end.getX.toInt) to Math.max(start.getX.toInt, end.getX.toInt)
+      y <- Math.min(start.getY.toInt, end.getY.toInt) to Math.max(start.getY.toInt, end.getY.toInt)
+    } yield {
+      if (!addTileObject(new Grass(new Point(x,y)))) return false
+    }
     true
   }
 }

@@ -13,6 +13,7 @@ object User {
 
 
   def incrementGrassCounter(): Unit = {
+    println("Walked on grass")
     if (Random.nextDouble() < WildBattle.BATTLE_PROBABILITY) grassCounter += 1
     if (grassCounter >= WildBattle.NUM_GRASS_TRIGGER) {
       println("IMPLEMENT BATTLE")

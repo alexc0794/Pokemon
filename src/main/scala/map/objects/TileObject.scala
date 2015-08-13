@@ -2,13 +2,13 @@ package map.objects
 
 import java.awt.{Graphics2D, Color}
 
-import scala.swing.Dimension
+import scala.swing.Point
 
 /**
  * Created by alexchou on 8/6/15.
  */
 abstract class TileObject {
-  val start: Dimension
+  val start: Point
   val WIDTH: Int    // width in tiles
   val HEIGHT: Int   // height in tiles
 
@@ -21,8 +21,8 @@ abstract class TileObject {
 
   def initPixels(): Unit
 
-  def getEnd(): Dimension = {
-      new Dimension(start.getWidth.toInt + WIDTH, start.getHeight.toInt + HEIGHT)
+  def getEnd(): Point = {
+      new Point(start.getX.toInt + WIDTH, start.getY.toInt + HEIGHT)
   }
 
   def fillSquare(color: Color, x1: Int, x2: Int, y1: Int, y2: Int): Unit = {

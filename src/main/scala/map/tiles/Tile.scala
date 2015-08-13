@@ -8,7 +8,7 @@ import map.objects.buildings.Building
 import scala.collection.mutable.Stack
 import map.characters._
 
-import scala.swing.Dimension
+import scala.swing.Point
 
 /**
  * Created by alexchou on 8/3/15.
@@ -45,7 +45,7 @@ abstract class Tile {
     None
   }
 
-  def checkIsEntrance(e: Dimension): Option[GameMap] = {
+  def checkIsEntrance(e: Point): Option[GameMap] = {
     for (tileObject <- tileObjects) {
       tileObject match {
         case o: Building => if (o.entrance.equals(e)) return Some(o.toMap)

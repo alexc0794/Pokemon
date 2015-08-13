@@ -5,12 +5,12 @@ import java.awt.Color
 
 import map.tiles.TileDimension
 
-import scala.swing.{Dimension, Color}
+import scala.swing.{Point, Color}
 
 /**
  * Created by alexchou on 8/6/15.
  */
-class Tree(s: Dimension) extends TileObject {
+class Tree(s: Point) extends TileObject {
   val start = s
   val WIDTH = 1
   val HEIGHT = 2

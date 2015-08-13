@@ -3,14 +3,14 @@ package map.objects.buildings
 import map.maps._
 import map.tiles.TileDimension
 
-import scala.swing._
+import scala.swing.{Point, Color}
 
 /**
  * Created by alexchou on 8/9/15.
  */
-class PokeCenter(s: Dimension, to: GameMap) extends Building {
+class PokeCenter(s: Point, to: GameMap) extends Building {
   val start = s
-  val entrance = new Dimension(s.getWidth.toInt + 1, s.getHeight.toInt + 4)
+  val entrance = new Point(s.getX.toInt + 1, s.getY.toInt + 4)
   val toMap = to
   val WIDTH = 4
   val HEIGHT = 5
@@ -25,7 +25,5 @@ class PokeCenter(s: Dimension, to: GameMap) extends Building {
   def initPixels(): Unit = {
     val LIGHT_BROWN = new Color(184, 148, 77)
     fillSquare(LIGHT_BROWN, 0,128,0,160)
-
-
   }
 }

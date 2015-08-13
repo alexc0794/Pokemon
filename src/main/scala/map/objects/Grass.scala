@@ -4,12 +4,12 @@ import java.awt.Color
 
 import map.tiles.{TileDimension, Tile}
 
-import scala.swing._
+import scala.swing.Point
 
 /**
  * Created by alexchou on 8/3/15.
  */
-class Grass(s: Dimension) extends TileObject {
+class Grass(s: Point) extends TileObject {
   val start = s
   val WIDTH = 1
   val HEIGHT = 1

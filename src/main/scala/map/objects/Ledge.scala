@@ -4,12 +4,12 @@ import java.awt.Color
 
 import map.tiles.TileDimension
 
-import scala.swing._
+import scala.swing.Point
 
 /**
  * Created by alexchou on 8/8/15.
  */
-class Ledge(s: Dimension) extends TileObject {
+class Ledge(s: Point) extends TileObject {
   val start = s
   val WIDTH = 1
   val HEIGHT = 1

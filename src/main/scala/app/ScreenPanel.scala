@@ -16,8 +16,8 @@ import scala.swing._
 class ScreenPanel(m: GameMap) extends FlowPanel {
   var map = m
   // centerX and centerY are indices for the map dimensions
-  var centerX: Int = map.entrance.getWidth.toInt
-  var centerY: Int = map.entrance.getHeight.toInt
+  var centerX: Int = map.entrance.getX.toInt
+  var centerY: Int = map.entrance.getY.toInt
 
   def getMinScreenX(): Int = centerX - ScreenDimension.CENTER_X
   def getMaxScreenX(): Int = centerX + ScreenDimension.CENTER_X
@@ -55,15 +55,15 @@ class ScreenPanel(m: GameMap) extends FlowPanel {
           centerX += (changeX * 2)
           centerY += (changeY * 2)
         } else {
-          tile.checkIsEntrance(new Dimension(centerX + changeX, centerY + changeY)) match {
+          tile.checkIsEntrance(new Point(centerX + changeX, centerY + changeY)) match {
             case Some(toMap: GameMap) => {
               println("change map to " + toMap)
               for (tileObject <- toMap.tileObjects) {
                 tileObject match {
                   case building: Building => {
                     if (building.toMap.equals(map))
-                    centerX = building.entrance.getWidth.toInt
-                    centerY = building.entrance.getHeight.toInt
+                    centerX = building.entrance.getX.toInt
+                    centerY = building.entrance.getY.toInt
                     map = toMap
                     val neighbor1 = getTile(centerX + 1, centerY)
                     val neighbor2 = getTile(centerX - 1, centerY)
@@ -130,8 +130,8 @@ class ScreenPanel(m: GameMap) extends FlowPanel {
     // Paint tile objects
     for {
       tileObject <- map.tileObjects
-      lower = toScreenDimension(tileObject.start.getWidth.toInt, tileObject.start.getHeight.toInt)
-      higher = toScreenDimension(tileObject.getEnd.getWidth.toInt, tileObject.getEnd.getHeight.toInt)
+      lower = toScreenDimension(tileObject.start.getX.toInt, tileObject.start.getY.toInt)
+      higher = toScreenDimension(tileObject.getEnd.getX.toInt, tileObject.getEnd.getY.toInt)
     } yield {
       (lower, higher) match {
         case (Some(l), Some(h)) => tileObject.drawPixels(g, l._1 * TileDimension.PIXEL_WIDTH, l._2 * TileDimension.PIXEL_HEIGHT, h._1 * TileDimension.PIXEL_WIDTH, h._2 * TileDimension.PIXEL_HEIGHT)
