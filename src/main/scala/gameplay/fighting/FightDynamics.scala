@@ -9,6 +9,6 @@ import pokedex.pokemon.Pokemon
 object FightDynamics {
 
   def damageHealth(attacker: Pokemon, defender: Pokemon, attack: Attack): Int = {
-    defender.health - attack.damage
+    attack.damage
   }
 }

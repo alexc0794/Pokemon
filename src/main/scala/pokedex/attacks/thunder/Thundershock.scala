@@ -5,5 +5,5 @@ package pokedex.attacks.thunder
  */
 object Thundershock extends ThunderAttack {
   val name = "Thundershock"
-  val damage = 10
+  val damage = 60
 }

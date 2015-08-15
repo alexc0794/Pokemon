@@ -3,6 +3,7 @@ package app.panels.text
 import java.awt.Color
 
 import app.PokemonApp
+import gameplay.battles.Battle
 import pokedex.pokemon.Pokemon
 
 import scala.swing.Label
@@ -10,13 +11,13 @@ import scala.swing.Label
 /**
  * Created by alexchou on 8/14/15.
  */
-class BattleOptionPanel(myPokemon: Pokemon, enemyPokemon: Pokemon) extends TextPanel {
+class BattleOptionPanel(battle: Battle) extends TextPanel {
   var index: Int = 0
   val attack = new Label("Attack") { foreground = Color.BLUE }
-  val pokemonbag = new Label("Pokemon")
+  val pokeBag = new Label("Pokemon")
   val item = new Label("Item")
   val run = new Label("Run")
-  val options = Array(attack, pokemonbag, item, run)
+  val options = Array(attack, pokeBag, item, run)
   val panel = new StyledGridPanel(4,1) {
     options.foreach(o => contents += o)
   }
@@ -44,10 +45,10 @@ class BattleOptionPanel(myPokemon: Pokemon, enemyPokemon: Pokemon) extends TextP
   }
   override def select(): Unit = {
     if (options(index).equals(attack)) {
-      PokemonApp.currTextPanel = new AttackPanel(myPokemon, enemyPokemon)
+      PokemonApp.currTextPanel = new AttackPanel(battle)
       PokemonApp.updateCurrentPanels()
       PokemonApp.currTextPanel.requestFocus()
-    } else if (options(index).equals(pokemonbag)) {
+    } else if (options(index).equals(pokeBag)) {
 
     } else if (options(index).equals(item)) {
 

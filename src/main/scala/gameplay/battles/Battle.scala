@@ -1,14 +1,15 @@
 package gameplay.battles
 
-import pokedex.pokemon.Pokemon
+import gameplay.lineups.Lineup
 
 /**
  * Created by alexchou on 8/12/15.
  */
-abstract class Battle {
+abstract class Battle(enemy: Lineup) {
   val BATTLE_PROBABILITY: Double
   val NUM_GRASS_TRIGGER: Int
   val CAN_RUN: Boolean
 
-  def getPokemon(): List[Pokemon]
+  val enemyLineup: Lineup = enemy
+
 }

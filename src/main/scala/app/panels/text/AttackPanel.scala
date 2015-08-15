@@ -4,21 +4,22 @@ import java.awt.Color
 
 import app.PokemonApp
 import app.panels.screen.BattlePanel
+import gameplay.battles.Battle
 import gameplay.fighting.FightDynamics
-import pokedex.pokemon.Pokemon
+import user.User
 
 import scala.swing.Label
 
 /**
  * Created by alexchou on 8/14/15.
  */
-class AttackPanel(myPokemon: Pokemon, enemyPokemon: Pokemon) extends TextPanel {
+class AttackPanel(battle: Battle) extends TextPanel {
   var index: Int = 0
   val back = new Label("Back")
   var options = Array[Label]()
   val panel = new StyledGridPanel(5,1) {
     var c = 0
-    myPokemon.attacks.foreach(attack => {
+    User.lineup.getFirstPokemon().get.attacks.foreach(attack => {
       val label = if (c == 0) new Label(attack.name) { foreground = Color.BLUE } else new Label(attack.name)
       contents += label
       options = options :+ label
@@ -51,7 +52,7 @@ class AttackPanel(myPokemon: Pokemon, enemyPokemon: Pokemon) extends TextPanel {
   }
   override def select(): Unit = {
     def goBack(): Unit = {
-      PokemonApp.currTextPanel = new BattleOptionPanel(myPokemon, enemyPokemon)
+      PokemonApp.currTextPanel = new BattleOptionPanel(battle)
       PokemonApp.updateCurrentPanels()
       PokemonApp.currTextPanel.requestFocus()
     }
@@ -60,13 +61,23 @@ class AttackPanel(myPokemon: Pokemon, enemyPokemon: Pokemon) extends TextPanel {
     } else {
       PokemonApp.currScreenPanel match {
         case battlePanel: BattlePanel => {
-          enemyPokemon.health = FightDynamics.damageHealth(myPokemon, enemyPokemon, myPokemon.attacks(index))
+          val myPokemon = User.lineup.getFirstPokemon().get
+          val enemyPokemon = battle.enemyLineup.getFirstPokemon().get
+          val damage = FightDynamics.damageHealth(
+            myPokemon,
+            enemyPokemon,
+            myPokemon.attacks(index)
+          )
+          enemyPokemon.health -= damage
           if (enemyPokemon.health <= 0) {
-            println(enemyPokemon.name + " has fainted")
-            PokemonApp.endBattle()
+            PokemonApp.messages = List(enemyPokemon.name + " has fainted", myPokemon.name + " has gained " + " experience")
+            PokemonApp.showNextMessage(PokemonApp.currTextPanel)
           } else {
-            println(enemyPokemon)
-            goBack()
+            PokemonApp.messages = List(
+              myPokemon.name + " used " + myPokemon.attacks(index),
+              enemyPokemon.name + " now has " + enemyPokemon.health + " hp"
+            )
+            PokemonApp.showNextMessage(PokemonApp.currTextPanel)
           }
         }
       }

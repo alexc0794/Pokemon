@@ -4,10 +4,7 @@ import java.awt.BorderLayout
 
 import app.panels.screen._
 import app.panels.text._
-import pokedex.pokemon.Pokemon
-import user.User
-
-import scala.collection.mutable.Stack
+import gameplay.battles.Battle
 import swing._
 import map.maps._
 
@@ -26,9 +23,6 @@ object PokemonApp extends SimpleSwingApplication {
   var currScreenPanel: ScreenPanel = mapPanel
   var currTextPanel: TextPanel = new BlankTextPanel
 
-  var messageStack: Stack[MessagePanel] = Stack[MessagePanel]()
-
-
   var top: Frame = {
     new MainFrame {
       title = "Pokemon"
@@ -40,9 +34,9 @@ object PokemonApp extends SimpleSwingApplication {
     }
   }
 
-  def engageBattle(myPokemon: Pokemon, enemyPokemon: Pokemon): Unit = {
-    currScreenPanel = new BattlePanel(enemyPokemon)
-    currTextPanel = new BattleOptionPanel(myPokemon, enemyPokemon)
+  def engageBattle(battle: Battle): Unit = {
+    currScreenPanel = new BattlePanel(battle)
+    currTextPanel = new BattleOptionPanel(battle)
     updateCurrentPanels()
     currTextPanel.requestFocus()
   }
@@ -65,6 +59,35 @@ object PokemonApp extends SimpleSwingApplication {
       layout(currScreenPanel) = BorderPanel.Position.Center
       layout(currTextPanel) = BorderPanel.Position.South
     }
+  }
+
+  var messages: List[String] = List[String]()
+
+  def showNextMessage(beforeMessagePanel: TextPanel): Unit = {
+    messages match {
+      case hd::tl => {
+        currTextPanel = new MessagePanel(hd, beforeMessagePanel)
+        messages = tl
+        updateCurrentPanels()
+        currTextPanel.requestFocus()
+      }
+      case _ => {
+        currTextPanel = beforeMessagePanel
+        if (isBattleOver()) {
+          endBattle()
+          updateCurrentPanels()
+          currScreenPanel.requestFocus()
+        } else {
+          updateCurrentPanels()
+          currTextPanel.requestFocus()
+        }
+      }
+    }
+  }
+
+  def isBattleOver(): Boolean = currScreenPanel match {
+    case battlePanel: BattlePanel => (battlePanel.battle.enemyLineup.getFirstPokemon().isEmpty)
+    case _ => false
   }
 
 }

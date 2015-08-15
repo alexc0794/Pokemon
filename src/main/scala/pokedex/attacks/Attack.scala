@@ -6,4 +6,6 @@ package pokedex.attacks
 trait Attack {
   val name: String
   val damage: Int
+
+  override def toString(): String = name
 }
