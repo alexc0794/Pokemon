@@ -1,10 +1,13 @@
 package app
 
-import java.awt.{BorderLayout, Color}
-import app.panels._
-import gameplay.Battle
+import java.awt.BorderLayout
 
-import scala.swing.event._
+import app.panels.screen._
+import app.panels.text._
+import pokedex.pokemon.Pokemon
+import user.User
+
+import scala.collection.mutable.Stack
 import swing._
 import map.maps._
 
@@ -13,112 +16,55 @@ import map.maps._
  * Created by alexchou on 8/2/15.
  */
 object PokemonApp extends SimpleSwingApplication {
-  var mapPanel = new MapPanel(TestMap) {
-    background = Color.BLACK
-    preferredSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
-    maximumSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
-    focusable = true
-    listenTo(keys)
-    /* Key listeners */
-    reactions += {
-      case KeyPressed(_,Key.Up,_,_) => {
-        this.moveCharacter(0,-1)
-      }
-      case KeyPressed(_,Key.Down,_,_) => {
-        this.moveCharacter(0,1)
-      }
-      case KeyPressed(_,Key.Left,_,_) => {
-        this.moveCharacter(-1,0)
-      }
-      case KeyPressed(_,Key.Right,_,_) => {
-        this.moveCharacter(1,0)
-      }
-    }
-  }
-
-  val upButton = new Button {
-    text = "U"
-    enabled = true
-    focusPainted = false
-    reactions += {
-      case ButtonClicked(b) => {
-        mapPanel.moveCharacter(0,-1)
-      }
-    }
-  }
-
-  val downButton = new Button {
-    text = "D"
-    enabled = true
-    focusPainted = false
-    reactions += {
-      case ButtonClicked(b) => {
-        mapPanel.moveCharacter(0,1)
-      }
-    }
-  }
-
-  val leftButton = new Button {
-    text = "L"
-    enabled = true
-    focusPainted = false
-    reactions += {
-      case ButtonClicked(b) => {
-        mapPanel.moveCharacter(-1,0)
-      }
-    }
-  }
-  val rightButton = new Button {
-    text = "R"
-    enabled = true
-    focusPainted = false
-    reactions += {
-      case ButtonClicked(b) => {
-        mapPanel.moveCharacter(1,0)
-      }
-    }
-  }
-
   val borderLayout = new BorderLayout()
   borderLayout.setVgap(0)
   borderLayout.setHgap(0)
 
-  val buttonPanel = new BorderPanel {
-    val directionalPanel = new BorderPanel {
-      layout(upButton) = BorderPanel.Position.North
-      layout(downButton) = BorderPanel.Position.South
-      layout(leftButton) = BorderPanel.Position.West
-      layout(rightButton) = BorderPanel.Position.East
+  var mapPanel = new MapPanel(TestMap)
+
+  /* Set current panels */
+  var currScreenPanel: ScreenPanel = mapPanel
+  var currTextPanel: TextPanel = new BlankTextPanel
+
+  var messageStack: Stack[MessagePanel] = Stack[MessagePanel]()
+
+
+  var top: Frame = {
+    new MainFrame {
+      title = "Pokemon"
+      peer.setLocationRelativeTo(null)
+      contents = new BorderPanel {
+        layout(currScreenPanel) = BorderPanel.Position.Center
+        layout(currTextPanel) = BorderPanel.Position.South
+      }
     }
-    layout(directionalPanel) = BorderPanel.Position.West
-    border = Swing.LineBorder(Color.BLACK)
   }
 
-  def engageBattle(battle: Battle): Unit = {
-    top.contents = new BorderPanel {
-      layout(new BattlePanel(battle)) = BorderPanel.Position.Center
-      layout(buttonPanel) = BorderPanel.Position.South
-    }
-    top.repaint()
+  def engageBattle(myPokemon: Pokemon, enemyPokemon: Pokemon): Unit = {
+    currScreenPanel = new BattlePanel(enemyPokemon)
+    currTextPanel = new BattleOptionPanel(myPokemon, enemyPokemon)
+    updateCurrentPanels()
+    currTextPanel.requestFocus()
   }
 
   def endBattle(): Unit = {
+    currScreenPanel = mapPanel
+    currTextPanel = new BlankTextPanel
+    updateCurrentPanels()
+    currScreenPanel.requestFocus()
+  }
+
+  def isBattleMode(): Boolean = currScreenPanel match {
+    case b: BattlePanel => true
+    case m: MapPanel => false
+    case _ => throw new Exception("Neither battle nor map panel")
+  }
+
+  def updateCurrentPanels(): Unit = {
     top.contents = new BorderPanel {
-      layout(mapPanel) = BorderPanel.Position.Center
-      layout(buttonPanel) = BorderPanel.Position.South
-    }
-    top.repaint()
-  }
-
-  val top = new MainFrame {
-    title = "Pokemon"
-    peer.setLocationRelativeTo(null)
-
-    var screenPanel: ScreenPanel = mapPanel
-
-    contents = new BorderPanel {
-      layout(screenPanel) = BorderPanel.Position.Center
-      layout(buttonPanel) = BorderPanel.Position.South
+      layout(currScreenPanel) = BorderPanel.Position.Center
+      layout(currTextPanel) = BorderPanel.Position.South
     }
   }
+
 }

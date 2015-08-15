@@ -1,4 +1,4 @@
-package gameplay
+package gameplay.battles
 
 import pokedex.Pokedex
 import pokedex.pokemon._
@@ -10,10 +10,10 @@ import scala.util.Random
  */
 object WildBattle extends Battle {
   val BATTLE_PROBABILITY: Double = 0.4
-  val NUM_GRASS_TRIGGER: Int = 10
+  val NUM_GRASS_TRIGGER: Int = 3
   val CAN_RUN = true
 
   def getPokemon(): List[Pokemon] = {
-    List(Pokedex.pokedex(Random.nextInt(Pokedex.pokedex.length)))
+    List(Pokedex.getRandomFromAll())
   }
 }
