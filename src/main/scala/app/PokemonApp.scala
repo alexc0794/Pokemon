@@ -17,7 +17,7 @@ object PokemonApp extends SimpleSwingApplication {
   borderLayout.setVgap(0)
   borderLayout.setHgap(0)
 
-  var mapPanel = new MapPanel(TestMap)
+  var mapPanel = new MapPanel(BrownMap)
 
   /* Set current panels */
   var currScreenPanel: ScreenPanel = mapPanel
@@ -25,6 +25,7 @@ object PokemonApp extends SimpleSwingApplication {
 
   var top: Frame = {
     new MainFrame {
+      resizable = false
       title = "Pokemon"
       peer.setLocationRelativeTo(null)
       contents = new BorderPanel {
@@ -33,19 +34,18 @@ object PokemonApp extends SimpleSwingApplication {
       }
     }
   }
+  currTextPanel.requestFocus()
 
   def engageBattle(battle: Battle): Unit = {
     currScreenPanel = new BattlePanel(battle)
     currTextPanel = new BattleOptionPanel(battle)
     updateCurrentPanels()
-    currTextPanel.requestFocus()
   }
 
   def endBattle(): Unit = {
     currScreenPanel = mapPanel
     currTextPanel = new BlankTextPanel
     updateCurrentPanels()
-    currScreenPanel.requestFocus()
   }
 
   def isBattleMode(): Boolean = currScreenPanel match {
@@ -59,6 +59,7 @@ object PokemonApp extends SimpleSwingApplication {
       layout(currScreenPanel) = BorderPanel.Position.Center
       layout(currTextPanel) = BorderPanel.Position.South
     }
+    currTextPanel.requestFocus()
   }
 
   var messages: List[String] = List[String]()
@@ -76,10 +77,8 @@ object PokemonApp extends SimpleSwingApplication {
         if (isBattleOver()) {
           endBattle()
           updateCurrentPanels()
-          currScreenPanel.requestFocus()
         } else {
           updateCurrentPanels()
-          currTextPanel.requestFocus()
         }
       }
     }

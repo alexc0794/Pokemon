@@ -10,20 +10,11 @@ import map.tiles._
 import user.User
 
 import scala.swing._
-import scala.swing.event.{Key, KeyPressed}
 
 /**
  * Created by alexchou on 8/3/15.
  */
 class MapPanel(m: GameMap) extends ScreenPanel {
-  reactions += {
-    case KeyPressed(_,Key.Up,_,_) => this.moveCharacter(0,-1)
-    case KeyPressed(_,Key.Down,_,_) => this.moveCharacter(0,1)
-    case KeyPressed(_,Key.Left,_,_) => this.moveCharacter(-1,0)
-    case KeyPressed(_,Key.Right,_,_) => this.moveCharacter(1,0)
-  }
-
-
   var map = m
   // centerX and centerY are indices for the map dimensions
   var centerX: Int = map.entrance.getX.toInt

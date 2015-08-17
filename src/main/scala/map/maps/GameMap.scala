@@ -1,7 +1,7 @@
 package map.maps
 
-import map.objects.{Grass, TileObject}
-import map.tiles.Tile
+import map.objects._
+import map.tiles._
 
 import scala.swing.Point
 
@@ -45,4 +45,25 @@ abstract class GameMap {
     }
     true
   }
+
+  def addLedge(start: Point, end: Point): Boolean = {
+    for {
+      x <- Math.min(start.getX.toInt, end.getX.toInt) to Math.max(start.getX.toInt, end.getX.toInt)
+      y <- Math.min(start.getY.toInt, end.getY.toInt) to Math.max(start.getY.toInt, end.getY.toInt)
+    } yield {
+      if (!addTileObject(new Ledge(new Point(x,y)))) return false
+    }
+    true
+  }
+
+  def addBush(start: Point, end: Point): Boolean = {
+    for {
+      x <- Math.min(start.getX.toInt, end.getX.toInt) to Math.max(start.getX.toInt, end.getX.toInt)
+      y <- Math.min(start.getY.toInt, end.getY.toInt) to Math.max(start.getY.toInt, end.getY.toInt)
+    } yield {
+      if (!addTileObject(new Bush(new Point(x,y)))) return false
+    }
+    true
+  }
+
 }

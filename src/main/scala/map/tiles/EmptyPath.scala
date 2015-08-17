@@ -1,6 +1,6 @@
 package map.tiles
 
-import java.awt.{Color, Graphics2D}
+import java.awt.Color
 
 /**
  * Created by alexchou on 8/4/15.

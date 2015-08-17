@@ -1,5 +1,7 @@
 package app.panels.text
 
+import java.awt.Color
+
 import app.PokemonApp
 
 import scala.swing.{Label, FlowPanel}
@@ -10,6 +12,7 @@ import scala.swing.{Label, FlowPanel}
 class MessagePanel(m: String, beforeMessagePanel: TextPanel) extends TextPanel {
   var message: String = m
   val panel = new FlowPanel() {
+    background = Color.WHITE
     contents += new Label(message)
   }
   contents += panel
