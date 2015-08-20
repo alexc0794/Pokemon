@@ -9,7 +9,7 @@ import gameplay.direction._
  */
 abstract class PokeCharacter {
   var name: String
-  var direction: Direction = new Left
+  var direction: Direction = new Down()
 
   var pixels: Array[Array[Color]]
 

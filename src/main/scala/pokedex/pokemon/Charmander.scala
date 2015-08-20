@@ -1,6 +1,8 @@
 package pokedex.pokemon
 
 import pokedex.attacks.Attack
+import pokedex.attacks.ground._
+import pokedex.attacks.fire._
 import pokedex.types._
 
 /**
@@ -9,7 +11,7 @@ import pokedex.types._
 object Charmander extends Pokemon {
   val id: Int = 2
   val pokemonType: PokemonType = Fire
-  var attacks: List[Attack] = List()
+  var attacks: List[Attack] = List(Scratch, Ember)
   var name: String = "Charmander"
 
   def apply = new Charmander

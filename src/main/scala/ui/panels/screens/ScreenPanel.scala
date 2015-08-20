@@ -1,8 +1,8 @@
-package app.panels.screen
+package ui.panels.screen
 
 import java.awt.{Color, Dimension}
 
-import app.ScreenDimension
+import ui.dimensions.ScreenDimension
 
 import scala.swing.FlowPanel
 
@@ -14,5 +14,10 @@ abstract class ScreenPanel extends FlowPanel {
   background = Color.BLACK
   preferredSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
   maximumSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
-  listenTo(keys)
+
+  def up(): Unit
+  def down(): Unit
+  def left(): Unit
+  def right(): Unit
+  def select(): Unit
 }

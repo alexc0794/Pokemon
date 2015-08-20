@@ -7,18 +7,18 @@ abstract class Direction {
 
 }
 
-class Up extends Direction {
+case class Up() extends Direction {
 
 }
 
-class Down extends Direction {
+case class Down() extends Direction {
 
 }
 
-class Left extends Direction {
+case class Left() extends Direction {
 
 }
 
-class Right extends Direction {
+case class Right() extends Direction {
 
 }

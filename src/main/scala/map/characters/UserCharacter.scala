@@ -11,6 +11,7 @@ import user._
  */
 object UserCharacter extends PokeCharacter {
   var name = User.name
+  direction = new Down()
 
   var pixels = Array.ofDim[Color](TileDimension.PIXEL_WIDTH, TileDimension.PIXEL_HEIGHT)
 
@@ -20,6 +21,7 @@ object UserCharacter extends PokeCharacter {
     pixels = Array.ofDim[Color](TileDimension.PIXEL_WIDTH, TileDimension.PIXEL_HEIGHT)
     val RED = new Color(243,31,12)
     val SKIN = new Color(244,133,63)
+
     direction match {
       case _: Down => {
         /* COLOR SKIN */

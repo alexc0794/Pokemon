@@ -1,12 +1,12 @@
-package app.panels.screen
+package ui.panels.screen
 
 import java.awt.Color
-
-import app.ScreenDimension
+import gameplay.direction._
 import map.characters._
 import map.maps._
 import map.objects.buildings._
 import map.tiles._
+import ui.dimensions.ScreenDimension
 import user.User
 
 import scala.swing._
@@ -29,6 +29,29 @@ class MapPanel(m: GameMap) extends ScreenPanel {
   // currX and currY are indices for where the character is currently on the screen
   var currScreenX = ScreenDimension.CENTER_X
   var currScreenY = ScreenDimension.CENTER_Y
+
+
+  def up(): Unit = {
+    UserCharacter.direction = new Up()
+    UserCharacter.initPixels()
+    moveCharacter(0,-1)
+  }
+  def down(): Unit = {
+    UserCharacter.direction = new Down()
+    UserCharacter.initPixels()
+    moveCharacter(0,1)
+  }
+  def left(): Unit = {
+    UserCharacter.direction = new Left()
+    UserCharacter.initPixels()
+    moveCharacter(-1,0)
+  }
+  def right(): Unit = {
+    UserCharacter.direction = new Right()
+    UserCharacter.initPixels()
+    moveCharacter(1,0)
+  }
+  def select(): Unit = {}
 
   def toScreenDimension(x: Int, y: Int): Option[(Int, Int)] = {
     val newX = x - getMinScreenX()
@@ -63,7 +86,7 @@ class MapPanel(m: GameMap) extends ScreenPanel {
                 tileObject match {
                   case building: Building => {
                     if (building.toMap.equals(map))
-                    centerX = building.entrance.getX.toInt
+                      centerX = building.entrance.getX.toInt
                     centerY = building.entrance.getY.toInt
                     map = toMap
                     val neighbor1 = getTile(centerX + 1, centerY)
@@ -79,7 +102,7 @@ class MapPanel(m: GameMap) extends ScreenPanel {
                       centerX -= 1
                     }
                     else if (!neighbor3.isEmpty && neighbor3.get.checkIsTraversable()) {
-                       println("neighbor3")
+                      println("neighbor3")
                       centerY += 1
                     }
                     else if (!neighbor4.isEmpty && neighbor4.get.checkIsTraversable()) centerY -= 1

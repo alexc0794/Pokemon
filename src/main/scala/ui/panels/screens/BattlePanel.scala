@@ -1,10 +1,8 @@
-package app.panels.screen
+package ui.panels.screen
 
 import java.awt.Color
-
-import app.ScreenDimension
 import gameplay.battles.Battle
-import pokedex.pokemon.Pokemon
+import ui.dimensions.ScreenDimension
 
 import scala.swing._
 
@@ -13,6 +11,7 @@ import scala.swing._
  */
 class BattlePanel(b: Battle) extends ScreenPanel {
   val battle = b
+  var isUsersTurn = true
 
   override def paintComponent(g: Graphics2D): Unit = {
     super.paintComponent(g)
@@ -21,4 +20,10 @@ class BattlePanel(b: Battle) extends ScreenPanel {
     g.fillRect(0, 0, ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
   }
 
+
+  def up(): Unit = {}
+  def down(): Unit = {}
+  def left(): Unit = {}
+  def right(): Unit = {}
+  def select(): Unit = {}
 }

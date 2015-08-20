@@ -1,7 +1,8 @@
 package pokedex.pokemon
 
 import pokedex.attacks.Attack
-import pokedex.attacks.thunder.Thundershock
+import pokedex.attacks.general._
+import pokedex.attacks.thunder._
 import pokedex.types._
 
 /**

@@ -1,6 +1,6 @@
 package user
 
-import app.PokemonApp
+import ui.PokemonApp
 import gameplay.battles.WildBattle
 import gameplay.lineups.Lineup
 import pokedex.pokemon._
@@ -14,6 +14,7 @@ object User {
   val name: String = ""
   var grassCounter: Int = 0
   var lineup: Lineup = new Lineup(List(new Pikachu))
+  var currPokemon: Pokemon = lineup.getFirstPokemon().get
 
   def incrementGrassCounter(): Unit = {
     if (Random.nextDouble() < WildBattle.BATTLE_PROBABILITY) {
@@ -29,6 +30,8 @@ object User {
 
   def blackout(): Unit = {
     println("Blacking out...")
+    PokemonApp.endBattle()
+    User.lineup.healAll()
   }
 
 }

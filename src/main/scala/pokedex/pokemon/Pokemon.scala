@@ -22,6 +22,17 @@ abstract class Pokemon {
     this
   }
 
+  def removeAttack(attack: Attack): Unit = {
+    attacks = attacks.diff(List(attack))
+  }
+
+  def addAttack(attack: Attack): Boolean = {
+    if (attacks.size < 4) {
+      attacks = attacks :+ attack
+      true
+    } else false
+  }
+
   override def toString(): String = {
     name + " " + level + " " + health
   }

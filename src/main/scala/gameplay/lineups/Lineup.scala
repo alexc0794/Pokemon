@@ -19,6 +19,7 @@ class Lineup(l: List[Pokemon]) {
     getFirst(lineup)
   }
 
-  def hasPokemonLeft(): Boolean = getFirstPokemon().isEmpty
+  def hasPokemonLeft(): Boolean = !getFirstPokemon().isEmpty
 
+  def healAll(): Unit = lineup.foreach(p => p.health = 100)
 }
