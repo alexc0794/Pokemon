@@ -70,7 +70,7 @@ class MapPanel(m: GameMap) extends ScreenPanel {
   }
 
   def traverseTile(tile: Tile): Unit = {
-    if (tile.checkHasPokemon()) User.incrementGrassCounter()
+    if (tile.checkHasPokemon()) User.state.incrementGrassCounter()
   }
 
   def moveCharacter(changeX: Int, changeY: Int): Unit = {
@@ -90,9 +90,8 @@ class MapPanel(m: GameMap) extends ScreenPanel {
             newCenter = building.toMapEntrance
             center = newCenter
           }
-
         }
-        case None => //nothing
+        case None => println("at the edge of the map")
       }
     }
     repaint()
@@ -150,8 +149,5 @@ class MapPanel(m: GameMap) extends ScreenPanel {
     (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight)
   }
 
-  
-  def save(): Unit = {
-    println("Saving")
-  }
+
 }

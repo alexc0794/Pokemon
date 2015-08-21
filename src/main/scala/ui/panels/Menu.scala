@@ -1,8 +1,6 @@
 package ui.panels
 
 import java.awt.{Dimension, Color}
-import javax.swing.BorderFactory
-import javax.swing.border.LineBorder
 
 import gameplay.battles.Battle
 import ui.PokemonApp
@@ -10,7 +8,7 @@ import ui.dimensions.MenuDimension
 import ui.panels.menus.labels._
 import user._
 
-import scala.swing.{Label, GridPanel}
+import scala.swing.GridPanel
 
 /**
  * Created by alexchou on 8/19/15.
@@ -63,7 +61,7 @@ class Menu extends InteractivePanel {
   def getPokemonMenuPanel(): GridPanel = {
     new GridPanel(7,1) {
       var i = 0
-      User.lineup.lineup.foreach(p => {
+      User.state.lineup.lineup.foreach(p => {
         contents += new PokemonListLabel((index == i), p)
         i += 1
       })
@@ -73,7 +71,7 @@ class Menu extends InteractivePanel {
   def getItemMenuPanel(): GridPanel = {
     new GridPanel(10,1) {
       var i = 0
-      ItemBag.items.foreach( itemBag  => {
+      User.state.itemBag.items.foreach( itemBag  => {
         contents += new ItemListLabel((index == i), itemBag._1, itemBag._2)
         i += 1
       })
@@ -93,7 +91,7 @@ class Menu extends InteractivePanel {
   def getAttackBattlePanel(): GridPanel = {
     new GridPanel(5,1) {
       var i = 0
-      User.currPokemon.attacks.foreach(a => {
+      User.state.currPokemon.attacks.foreach(a => {
         contents += new AttackListLabel((index == i), a)
         i += 1
       })
@@ -103,7 +101,7 @@ class Menu extends InteractivePanel {
   def getItemBattlePanel(): GridPanel = {
     new GridPanel(10,1) {
       var i = 0
-      ItemBag.items.foreach( itemBag  => {
+      User.state.itemBag.items.foreach( itemBag  => {
         contents += new ItemListLabel((index == i), itemBag._1, itemBag._2)
         i += 1
       })
@@ -113,16 +111,12 @@ class Menu extends InteractivePanel {
   def getPokemonBattlePanel(): GridPanel = {
     new GridPanel(7,1) {
       var i = 0
-      User.lineup.lineup.foreach(p => {
+      User.state.lineup.lineup.foreach(p => {
         contents += new PokemonListLabel((index == i), p)
         i += 1
       })
       contents += new BackLabel(index == i, getBattlePanel())
     }
-  }
-
-  def run(): Unit = {
-
   }
 
   def incrementCurrMenu(): Unit = {

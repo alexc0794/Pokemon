@@ -22,7 +22,7 @@ class BattlePanel(b: Battle) extends ScreenPanel {
     g.setColor(Color.GRAY)
     g.fillRect(0, 0, ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
     // draw health bars
-    val userHealthBar = new HealthBar(User.currPokemon.health)
+    val userHealthBar = new HealthBar(User.state.currPokemon.health)
     val enemyHealthBar = new HealthBar(battle.currEnemy.health)
 
     userHealthBar.drawPixels(g, new Point(ScreenDimension.WIDTH_X * 1/4, ScreenDimension.HEIGHT_Y * 3/4))

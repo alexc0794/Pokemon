@@ -39,7 +39,7 @@ case class MoneyMenuLabel(isHovered: Boolean) extends MenuLabel(isHovered: Boole
 }
 case class SaveMenuLabel(isHovered: Boolean) extends MenuLabel(isHovered: Boolean) {
   text = "Save"
-  def run: Unit = {}
+  def run: Unit = PokemonApp.save()
 }
 case class ExitMenuLabel(isHovered: Boolean) extends MenuLabel(isHovered: Boolean) {
   text = "Exit"

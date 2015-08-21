@@ -1,12 +1,13 @@
 package ui
 
-import java.awt.Color
 import javax.swing.BorderFactory
 
 import gameplay.battles.Battle
 import panels._
 import ui.panels.Menu
 import scala.swing._
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 /**
  * Created by alexchou on 8/18/15.
@@ -58,6 +59,10 @@ object PokemonApp extends SimpleSwingApplication {
       layout(text) = BorderPanel.Position.South
     }
     panel.requestFocus()
+  }
+
+  def save(): Unit = {
+
   }
 
 }

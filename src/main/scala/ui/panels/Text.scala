@@ -53,7 +53,7 @@ class Text extends InteractivePanel {
       if (message.equals("WONBATTLE")) {
         PokemonApp.endBattle()
       } else if (message.equals("BLACKINGOUT")) {
-        User.blackout()
+        User.state.blackout()
       } else {
         PokemonApp.reset(PokemonApp.text)
       }

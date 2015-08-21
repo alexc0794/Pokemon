@@ -7,7 +7,7 @@ import gameplay.items.potions._
 /**
  * Created by alexchou on 8/20/15.
  */
-object ItemBag {
+class ItemBag {
   var items: Map[Item, Int] = Map[Item, Int]()
 
   init()

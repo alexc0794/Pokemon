@@ -48,10 +48,7 @@ abstract class Tile {
   def checkIsEntrance(e: Point): Option[Building] = {
     for (tileObject <- tileObjects) {
       tileObject match {
-        case b: Building => {
-          println("entrance: " + b.entrance())
-          if (b.entrance.equals(e)) return Some(b)
-        }
+        case b: Building => if (b.entrance.equals(e)) return Some(b)
         case _ =>
       }
     }

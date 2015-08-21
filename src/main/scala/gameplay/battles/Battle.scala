@@ -22,22 +22,22 @@ abstract class Battle(enemy: Lineup) {
   var currEnemy: Pokemon = enemyLineup.getFirstPokemon().get
 
   def switchPokemon(pokemon: Pokemon): Boolean = {
-    if (pokemon.equals(User.currPokemon) || pokemon.health <= 0) false
+    if (pokemon.equals(User.state.currPokemon) || pokemon.health <= 0) false
     else {
-      val switchedPokemon = User.currPokemon
-      User.currPokemon = pokemon
-      PokemonApp.text.addMessage("User has called back " + switchedPokemon.name + " and summoned " + User.currPokemon.name)
+      val switchedPokemon = User.state.currPokemon
+      User.state.currPokemon = pokemon
+      PokemonApp.text.addMessage("User has called back " + switchedPokemon.name + " and summoned " + User.state.currPokemon.name)
       true
     }
   }
 
   def attackEnemy(attack: Attack): Unit = {
-    val damage = FightDynamics.damageHealth(User.currPokemon, currEnemy, attack)
+    val damage = FightDynamics.damageHealth(User.state.currPokemon, currEnemy, attack)
     currEnemy.health -= damage
     PokemonApp.text.addMessages(
       List(
         "test",
-        User.currPokemon.name + " used " + attack.name,
+        User.state.currPokemon.name + " used " + attack.name,
         "Enemy " + currEnemy.name + " was damaged by " + damage
       )
     )
@@ -65,23 +65,23 @@ abstract class Battle(enemy: Lineup) {
 
   def getAttacked(): Unit = {
     val attack: Attack = currEnemy.attacks(Random.nextInt(currEnemy.attacks.length))
-    val damage = FightDynamics.damageHealth(currEnemy, User.currPokemon, attack)
-    User.currPokemon.health -= damage
+    val damage = FightDynamics.damageHealth(currEnemy, User.state.currPokemon, attack)
+    User.state.currPokemon.health -= damage
     PokemonApp.text.addMessages(
       List(
         "Enemy " + currEnemy.name + " used " + attack.name,
-        User.currPokemon.name + " was damaged by " + damage
+        User.state.currPokemon.name + " was damaged by " + damage
       )
     )
-    if (User.currPokemon.health <= 0) {
-      User.currPokemon.health = 0
-      val faintedPokemon = User.currPokemon
-      if (User.lineup.hasPokemonLeft()) {
-        User.currPokemon = User.lineup.getFirstPokemon().get
+    if (User.state.currPokemon.health <= 0) {
+      User.state.currPokemon.health = 0
+      val faintedPokemon = User.state.currPokemon
+      if (User.state.lineup.hasPokemonLeft()) {
+        User.state.currPokemon = User.state.lineup.getFirstPokemon().get
         PokemonApp.text.addMessages(
           List(
             faintedPokemon.name + " has fainted!",
-            "You have summoned " + User.currPokemon.name
+            "You have summoned " + User.state.currPokemon.name
           )
         )
       } else {
