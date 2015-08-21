@@ -27,8 +27,10 @@ class Text extends InteractivePanel {
   def right(): Unit = {}
   def select(): Unit = showNextMessage()
   def moveFocus(): Unit = {
-    PokemonApp.text.border = BorderFactory.createEmptyBorder()
-    PokemonApp.screen.requestFocus()
+    if (!hasMessage()) {
+      PokemonApp.text.border = BorderFactory.createEmptyBorder()
+      PokemonApp.screen.requestFocus()
+    }
   }
 
   def addMessages(m: List[String]): Unit = {

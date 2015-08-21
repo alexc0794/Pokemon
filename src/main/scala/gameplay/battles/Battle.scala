@@ -36,11 +36,13 @@ abstract class Battle(enemy: Lineup) {
     currEnemy.health -= damage
     PokemonApp.text.addMessages(
       List(
+        "test",
         User.currPokemon.name + " used " + attack.name,
-        currEnemy.name + " was damaged by " + damage + " and now has health " + currEnemy.health
+        "Enemy " + currEnemy.name + " was damaged by " + damage
       )
     )
     if (currEnemy.health <= 0) {
+      currEnemy.health = 0
       val faintedEnemy = currEnemy
       if (enemyLineup.hasPokemonLeft()) {
         currEnemy = enemyLineup.getFirstPokemon().get
@@ -67,11 +69,12 @@ abstract class Battle(enemy: Lineup) {
     User.currPokemon.health -= damage
     PokemonApp.text.addMessages(
       List(
-        currEnemy.name + " used " + attack.name,
-        User.currPokemon.name + " was damaged by " + damage + " and now has health " + User.currPokemon.health
+        "Enemy " + currEnemy.name + " used " + attack.name,
+        User.currPokemon.name + " was damaged by " + damage
       )
     )
     if (User.currPokemon.health <= 0) {
+      User.currPokemon.health = 0
       val faintedPokemon = User.currPokemon
       if (User.lineup.hasPokemonLeft()) {
         User.currPokemon = User.lineup.getFirstPokemon().get
@@ -83,7 +86,12 @@ abstract class Battle(enemy: Lineup) {
         )
       } else {
         // no pokemon left
-        PokemonApp.text.addMessage("BLACKINGOUT")
+        PokemonApp.text.addMessages(
+          List(
+            "You are out of Pokemon! Blacking out...",
+            "BLACKINGOUT"
+          )
+        )
       }
     }
   }

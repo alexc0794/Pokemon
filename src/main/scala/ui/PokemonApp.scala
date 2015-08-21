@@ -13,7 +13,7 @@ import scala.swing._
  */
 object PokemonApp extends SimpleSwingApplication {
 
-  var menu = new Menu()
+  var menu = new Menu() { visible = false }
   var screen = new Screen()
   var text = new Text()
 
@@ -52,7 +52,6 @@ object PokemonApp extends SimpleSwingApplication {
     screen.border = BorderFactory.createEmptyBorder()
     menu.border = BorderFactory.createEmptyBorder()
     text.border = BorderFactory.createEmptyBorder()
-    panel.border = BorderFactory.createLineBorder(Color.BLACK)
     top.contents = new BorderPanel {
       layout(screen) = BorderPanel.Position.Center
       layout(menu) = BorderPanel.Position.East

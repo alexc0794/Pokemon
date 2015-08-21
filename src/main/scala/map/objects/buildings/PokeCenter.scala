@@ -5,16 +5,12 @@ import java.awt.Color
 import map.maps._
 import map.tiles.TileDimension
 
-import scala.swing.Color
-import scala.swing.{Point, Color}
+import scala.swing.{Dimension, Color, Point}
 
 /**
  * Created by alexchou on 8/9/15.
  */
-class PokeCenter(s: Point, to: GameMap) extends Building {
-  val start = s
-  val entrance = new Point(s.getX.toInt + 1, s.getY.toInt + 4)
-  val toMap = to
+class PokeCenter(s: Point, map: GameMap, mapEntrance: Point) extends Building(s: Point, map: GameMap, mapEntrance: Point) {
   val WIDTH = 4
   val HEIGHT = 5
   var pixels = Array.ofDim[Color](WIDTH * TileDimension.PIXEL_WIDTH, HEIGHT * TileDimension.PIXEL_HEIGHT)

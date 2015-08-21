@@ -45,10 +45,13 @@ abstract class Tile {
     None
   }
 
-  def checkIsEntrance(e: Point): Option[GameMap] = {
+  def checkIsEntrance(e: Point): Option[Building] = {
     for (tileObject <- tileObjects) {
       tileObject match {
-        case o: Building => if (o.entrance.equals(e)) return Some(o.toMap)
+        case b: Building => {
+          println("entrance: " + b.entrance())
+          if (b.entrance.equals(e)) return Some(b)
+        }
         case _ =>
       }
     }

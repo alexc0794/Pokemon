@@ -40,9 +40,13 @@ class Menu extends InteractivePanel {
     }
   }
   def moveFocus(): Unit = {
-    PokemonApp.menu.border = BorderFactory.createEmptyBorder()
-    PokemonApp.text.border = LineBorder.createGrayLineBorder()
-    PokemonApp.text.requestFocus()
+    if (PokemonApp.text.hasMessage()) {
+      PokemonApp.menu.visible = false
+      PokemonApp.text.requestFocus()
+    } else if (!PokemonApp.screen.isBattle) {
+      PokemonApp.menu.visible = false
+      PokemonApp.screen.requestFocus()
+    }
   }
 
 
@@ -146,11 +150,13 @@ class Menu extends InteractivePanel {
   }
 
   def engageBattle(b: Battle): Unit = {
+    visible = true
     battle = Some(b)
     changeCurrMenu(getBattlePanel())
   }
 
   def endBattle(): Unit = {
+    visible = false
     changeCurrMenu(getMenuPanel())
   }
 }

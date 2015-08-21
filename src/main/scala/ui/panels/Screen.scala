@@ -18,8 +18,9 @@ class Screen extends InteractivePanel {
   preferredSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
   maximumSize = new Dimension(ScreenDimension.WIDTH_X, ScreenDimension.HEIGHT_Y)
 
-  var currMap: MapPanel = new MapPanel(BrownMap)
+  var currMap: MapPanel = new MapPanel(TestMap)
   var currScreen: ScreenPanel = currMap
+  var isBattle: Boolean = false
 
   reset()
 
@@ -29,18 +30,19 @@ class Screen extends InteractivePanel {
   def right(): Unit = currScreen.right()
   def select(): Unit = currScreen.select()
   def moveFocus(): Unit = {
-    PokemonApp.screen.border = BorderFactory.createEmptyBorder()
-    PokemonApp.menu.border = LineBorder.createGrayLineBorder()
+    PokemonApp.menu.visible = true
     PokemonApp.menu.requestFocus()
   }
 
   def engageBattle(battle: Battle): Unit = {
     currScreen = new BattlePanel(battle)
+    isBattle = true
     reset()
   }
 
   def endBattle(): Unit = {
     currScreen = currMap
+    isBattle = false
     reset()
   }
 

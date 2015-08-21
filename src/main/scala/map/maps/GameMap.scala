@@ -1,6 +1,7 @@
 package map.maps
 
 import map.objects._
+import map.objects.buildings.Building
 import map.tiles._
 
 import scala.swing.Point
@@ -12,6 +13,17 @@ abstract class GameMap {
   val tiles: Array[Array[Tile]]
   var tileObjects: Set[TileObject]
   var entrance: Point
+
+  def getRows(): Int = tiles.length
+
+  def getCols(): Int = tiles(0).length
+
+  def isInBounds(p: Point): Boolean = {
+    (p.getX().toInt >= 0
+      && p.getX().toInt < getCols()
+      && p.getY().toInt >= 0
+      && p.getY().toInt < getRows())
+  }
 
   def addTileObject(tileObject: TileObject): Boolean = {
     val x1 = tileObject.start.getX.toInt
@@ -30,11 +42,22 @@ abstract class GameMap {
         case _ => return false
       }
     }
-
     tileObjects += tileObject
     true
   }
 
+  def getBuildings(): List[Building] = {
+    var buildings = List[Building]()
+    for {
+      tileObject <- tileObjects
+    } yield {
+      tileObject match {
+        case b: Building => buildings = buildings :+ b
+        case _ =>
+      }
+    }
+    buildings
+  }
 
   def addGrass(start: Point, end: Point): Boolean = {
     for {

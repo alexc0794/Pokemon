@@ -5,6 +5,7 @@ import gameplay.battles.WildBattle
 import gameplay.lineups.Lineup
 import pokedex.pokemon._
 
+import scala.swing.Point
 import scala.util.Random
 
 /**
@@ -30,8 +31,11 @@ object User {
 
   def blackout(): Unit = {
     println("Blacking out...")
-    PokemonApp.endBattle()
+    PokemonApp.screen.currMap.center =
+      new Point(PokemonApp.screen.currMap.map.entrance.getX().toInt,
+        PokemonApp.screen.currMap.map.entrance.getY().toInt)
     User.lineup.healAll()
+    PokemonApp.endBattle()
   }
 
 }
