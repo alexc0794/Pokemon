@@ -1,5 +1,8 @@
 package pokedex.pokemon
 
+import pokedex.attacks.Attack
+import pokedex.attacks.ground._
+import pokedex.attacks.fire._
 import pokedex.types._
 
 /**
@@ -8,15 +11,15 @@ import pokedex.types._
 object Charmander extends Pokemon {
   val id: Int = 2
   val pokemonType: PokemonType = Fire
+  var attacks: List[Attack] = List(Scratch, Ember)
+  var name: String = "Charmander"
 
   def apply = new Charmander
-
-  override def toString(): String = "Charmander"
 }
 
 class Charmander extends Pokemon {
   val id: Int = Charmander.id
   val pokemonType: PokemonType = Charmander.pokemonType
-  var name: String = "Charmander"
-  var level: Int = 1
+  var attacks: List[Attack] = Charmander.attacks
+  var name: String = Charmander.name
 }

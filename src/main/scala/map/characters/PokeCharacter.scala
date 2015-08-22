@@ -2,16 +2,14 @@ package map.characters
 
 import java.awt.{Dimension, Color, Graphics2D}
 
-import map.objects.TileObject
-import map.tiles.TileDimension
-
-import scala.swing._
+import gameplay.direction._
 
 /**
  * Created by alexchou on 8/4/15.
  */
 abstract class PokeCharacter {
   var name: String
+  var direction: Direction = new Down()
 
   var pixels: Array[Array[Color]]
 

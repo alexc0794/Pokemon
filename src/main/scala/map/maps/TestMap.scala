@@ -42,7 +42,7 @@ object TestMap extends GameMap {
 
   addTileObject(new PokeCenter(
     new Point(entrance.getX.toInt + 4, entrance.getY.toInt),
-    EmptyMap)
+    EmptyMap, new Point(51,36))
   )
 
 }
